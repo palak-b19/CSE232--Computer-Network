@@ -15,6 +15,7 @@ try :
     while(ping_count<10):
         try:
             start_time = perf_counter()
+            #! for more precision to analyse when RTT time is close to 0 specially in the localhost
             ping_number =  str(ping_count)
             current_time = ctime()
             message_sent = "Ping_Number: " + ping_number + " Time: " + str(current_time)
