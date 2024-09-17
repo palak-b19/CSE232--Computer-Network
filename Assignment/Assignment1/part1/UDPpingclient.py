@@ -1,12 +1,11 @@
-
 import random
 from socket import *
 from time import *
 
 client_socket = socket(AF_INET,SOCK_DGRAM)
 
-server_addr = ("localhost", 12000)
-client_socket.settimeout(2)
+server_addr = ("localhost",12000)
+client_socket.settimeout(1)
 ping_count =0
 RTT_list = []
 lost_package=0
@@ -15,7 +14,6 @@ try :
     while(ping_count<10):
         try:
             start_time = perf_counter()
-            #! for more precision to analyse when RTT time is close to 0 specially in the localhost
             ping_number =  str(ping_count)
             current_time = ctime()
             message_sent = "Ping_Number: " + ping_number + " Time: " + str(current_time)
@@ -43,11 +41,19 @@ finally:
     print("closing socket")
     client_socket.close()
 
-sum_RTT = sum(RTT_list)
-avg_RTT = sum_RTT/len(RTT_list)
-max_RTT = max(RTT_list)
-min_RTT = min(RTT_list)
-perc_RTT_loss = (lost_package/10)*100
+number_of_datagrams_sent = len(RTT_list)
+if(len(RTT_list)>0):
+    sum_RTT = sum(RTT_list)
+    avg_RTT = sum_RTT/len(RTT_list)
+    max_RTT = max(RTT_list)
+    min_RTT = min(RTT_list)
+    perc_RTT_loss = (lost_package/10)*100
+else:
+     avg_RTT=0
+     max_RTT=0
+     min_RTT=0
+     perc_RTT_loss=100
+
 
 print('Average RTT : ', avg_RTT)
 print('Max RTT : ', max_RTT)
